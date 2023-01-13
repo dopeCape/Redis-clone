@@ -11,16 +11,15 @@ fn main() {
      for stream in listener.incoming() {
          match stream {
              Ok(mut stream) => {
-                 let mut stream_string:String = String::new();
-                println!("connectd to someone");
 
-                 stream.read_to_string(&mut stream_string).expect("error encodoing to string");
-                    println!("{}",stream_string) ;
-                 if stream_string == "PING" || stream_string == "ping"{
-                     println!("{}",simple_string_encoder("PONG".to_string()));
-                     write!(stream,"{}",simple_string_encoder("PONG".to_string())).expect("error writeing to stream");
+                    let  mut buf = [0;128];
+                    stream.read(&mut buf).expect("error encodoing to string");
+                    println!("{:?}",buf) ;
+                 // if stream_string == "PING" || stream_string == "ping"{
+                 //     println!("{}",simple_string_encoder("PONG".to_string()));
+                 //     write!(stream,"{}",simple_string_encoder("PONG".to_string())).expect("error writeing to stream");
                      
-                 }
+                 // }
              }
              Err(e) => {
                  println!("error: {}", e);
