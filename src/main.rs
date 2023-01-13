@@ -37,7 +37,7 @@ fn responder(mut stream: TcpStream) {
 
         }
     }
-     println!("{}",buf[1]);
+     println!("{}",looper);
     for _ in 0..looper{
      let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
