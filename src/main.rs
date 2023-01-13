@@ -17,12 +17,15 @@ fn main() {
                     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
                     let vec_of_command = convert_to_vec_of_msg(stream_string);
             println!("{:?}",vec_of_command);
-                if vec_of_command[0].1 == "PING" || vec_of_command[0].1 == "ping"{
-                     println!("{}",simple_string_encoder("PONG".to_string()));
+            for tup in vec_of_command.iter(){
 
-                     write!(stream,"{}",simple_string_encoder("PONG".to_string())).expect("error writeing to stream");
-                     
-                 }
+                if tup.1 == "PING" || tup.1 == "ping"{
+                    println!("{}",simple_string_encoder("PONG".to_string()));
+
+                    write!(stream,"{}",simple_string_encoder("PONG".to_string())).expect("error writeing to stream");
+
+                }
+            }
              }
              Err(e) => {
                  println!("error: {}", e);
