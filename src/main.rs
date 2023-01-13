@@ -49,7 +49,7 @@ fn convert_to_vec_of_msg(s:String)->Vec<(i32, String)>{
         }
         else if i.contains("$"){
             vec_of_commands.push(t);
-            count+=1;
+
         vec_of_commands[count].0 = i[1..].parse::<i32>().expect("error while parsing to i32");
          
         }else{
