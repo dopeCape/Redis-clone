@@ -13,8 +13,9 @@ fn main() {
              Ok(mut stream) => {
 
                     let  mut buf = [0;128];
-                    stream.read(&mut buf).expect("error encodoing to string");
-                    println!("{:?}",buf) ;
+                    let i = stream.read(&mut buf).expect("error encodoing to string");
+                    let st = String::from_utf8(buf[..i].to_vec()).expect("asas");
+                    println!("{}",st) ;
                  // if stream_string == "PING" || stream_string == "ping"{
                  //     println!("{}",simple_string_encoder("PONG".to_string()));
                  //     write!(stream,"{}",simple_string_encoder("PONG".to_string())).expect("error writeing to stream");
