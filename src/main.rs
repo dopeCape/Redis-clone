@@ -43,11 +43,12 @@ fn convert_to_vec_of_msg(s:String)->Vec<(i32, String)>{
    let mut count = 0;
    for i in s.lines(){
         let  t:(i32,String)  = (0,"".to_string());
-            vec_of_commands.push(t);
+
         if i.contains("*"){
 
         }
         else if i.contains("$"){
+            vec_of_commands.push(t);
             count+=1;
         vec_of_commands[count].0 = i[1..].parse::<i32>().expect("error while parsing to i32");
          
