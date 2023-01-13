@@ -45,7 +45,7 @@ fn convert_to_vec_of_msg(s:String)->Vec<(i32, String)>{
         if i.contains("*"){
 
         }
-        if i.contains("$"){
+        else if i.contains("$"){
         t.0 = i[1..].parse::<i32>().expect("error while parsing to i32");
          
         }else{
