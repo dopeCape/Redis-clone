@@ -40,20 +40,23 @@ fn simple_string_encoder(data:String)->String{
 
 fn convert_to_vec_of_msg(s:String)->Vec<(i32, String)>{
    let mut vec_of_commands:Vec<(i32,String)> = Vec::new();
+   let mut count = 0;
    for i in s.lines(){
-        let mut t:(i32,String)  = (0,"".to_string());
+        let  t:(i32,String)  = (0,"".to_string());
+            vec_of_commands.push(t);
         if i.contains("*"){
 
         }
         else if i.contains("$"){
-        t.0 = i[1..].parse::<i32>().expect("error while parsing to i32");
+            count+=1;
+        vec_of_commands[count].0 = i[1..].parse::<i32>().expect("error while parsing to i32");
          
         }else{
-            t.1 =i.to_string();
-
+            vec_of_commands[count].1 =i.to_string();
+    count+=1;
         }
 
-            vec_of_commands.push(t);
+
 
    }
    vec_of_commands
