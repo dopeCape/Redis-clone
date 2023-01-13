@@ -27,6 +27,7 @@ fn simple_string_encoder(data: String) -> String {
 fn responder(mut stream: TcpStream) {
     let mut buf = [0; 128];
      stream.read(&mut buf).expect("error encodoing to string");
+     println!("{}",buf[1]);
     for _ in 0..buf[1]{
      let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
