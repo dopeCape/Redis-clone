@@ -9,8 +9,11 @@ fn main() {
 
     for stream in listener.incoming() {
         match stream {
-            Ok(stream) => {
-                responder(stream);
+            Ok(mut stream) => {
+                loop{
+
+                responder(&mut stream);
+                }
             }
 
             Err(e) => {
@@ -24,7 +27,7 @@ fn simple_string_encoder(data: String) -> String {
     format!("+{}\r\n", data)
 }
 
-fn responder(mut stream: TcpStream) {
+fn responder( stream: &mut TcpStream) {
     let mut buf = [0; 128];
      let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
