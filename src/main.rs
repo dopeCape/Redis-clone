@@ -1,5 +1,5 @@
 // Uncomment this block to pass the first stage
-use std::net::TcpListener;
+use std::{net::TcpListener, io::Read,io::Write};
 
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -10,12 +10,23 @@ fn main() {
     
      for stream in listener.incoming() {
          match stream {
-             Ok(_stream) => {
-                 println!("accepted new connection");
+             Ok(mut stream) => {
+                 let mut stream_string:String = String::new();
+                 stream.read_to_string(&mut stream_string).expect("error encodoing to string");
+        
+                 if stream_string == "PING" || stream_string == "ping"{
+                     write!(stream,"{}",simple_string_encoder("PONG".to_string())).expect("error writeing to stream");
+                 }
              }
              Err(e) => {
                  println!("error: {}", e);
              }
          }
      }
+}
+
+
+fn simple_string_encoder(data:String)->String{
+       format!("+{}\r\n",data) 
+
 }
