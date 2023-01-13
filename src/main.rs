@@ -17,6 +17,7 @@ fn main() {
                  stream.read_to_string(&mut stream_string).expect("error encodoing to string");
                     println!("{}",stream_string) ;
                  if stream_string == "PING" || stream_string == "ping"{
+                     println!("{}",simple_string_encoder("PONG".to_string()));
                      write!(stream,"{}",simple_string_encoder("PONG".to_string())).expect("error writeing to stream");
                      
                  }
