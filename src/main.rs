@@ -28,7 +28,7 @@ fn responder(mut stream: TcpStream) {
     let mut buf = [0; 128];
      stream.read(&mut buf).expect("error encodoing to string");
      println!("{}",buf[1]);
-    for _ in 0..buf[1]{
+    for _ in 0..(buf[1] as usize){
      let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
     let vec_of_command = convert_to_vec_of_msg(stream_string);
