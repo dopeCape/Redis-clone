@@ -26,20 +26,6 @@ fn simple_string_encoder(data: String) -> String {
 
 fn responder(mut stream: TcpStream) {
     let mut buf = [0; 128];
-     let x =stream.read(&mut buf).expect("error encodoing to string");
-
-     let mut looper  =0;
-    let stream_stringz = String::from_utf8(buf[..x].to_vec()).expect("asas");
-    for l in stream_stringz.lines(){
-        if l.contains("*"){
-
-            looper = l[1..].parse::<i32>().expect("error while parsing to i32");
-
-        }
-    }
-     println!("{}",looper);
-    for y in 0..=looper{
-        println!("{}",y);
      let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
     let vec_of_command = convert_to_vec_of_msg(stream_string);
@@ -54,7 +40,7 @@ fn responder(mut stream: TcpStream) {
         }
     }
     
-    }
+    
     
 
    }
