@@ -120,13 +120,13 @@ fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>
     let mut count = 0;
 
     let mut t: executor::Command = executor::Command { ty: None, command: Vec::new() };
-
+    t.command.push(None);
     vec_of_commands.push(t);
     {}
     for i in s.lines() {
         let mut t: executor::Command = executor::Command { ty: None, command: Vec::new() };
 
-
+    t.command.push(None);
         if i.contains("*") {
         } else if i.contains("$") {
         } else {
@@ -139,6 +139,7 @@ fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>
                 if i.contains("PING") || i.contains("ping") {
                     vec_of_commands[count].ty = Some("print".to_string());
 
+                    vec_of_commands.pop();
                     vec_of_commands[count].command.push( Some("PING".to_string())) ;
 
                     continue;
@@ -153,6 +154,7 @@ fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>
                 }}if vec_of_commands[count].ty != None {
 
                     
+                    vec_of_commands.pop();
                     vec_of_commands[count].command.push( Some(i.to_string())) ;
                 
                     
