@@ -3,6 +3,7 @@ use std::{ net::{ TcpListener, TcpStream }, io::Read, io::Write };
 
 use threds::ThreadPool;
 mod threds;
+mod executor;
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
 
@@ -29,41 +30,67 @@ fn main() {
     }
 }
 
-fn simple_string_encoder(data: String) -> String {
+fn simple_string_encoder(data: &String) -> String {
     format!("+{}\r\n", data)
 }
 
 fn responder(stream: &mut TcpStream) {
     let mut buf = [0; 128];
+    let mut vec_of_commands:Vec<executor::Command> = Vec::new();
     let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
-    let vec_of_command = convert_to_vec_of_msg(stream_string);
-    println!("{:?}", vec_of_command);
-    for tup in vec_of_command.iter() {
-        if tup.1 == "PING" || tup.1 == "ping" {
-            println!("{}", simple_string_encoder("PONG".to_string()));
+    convert_to_vec_of_msg(stream_string,&mut vec_of_commands);
 
-            write!(stream, "{}", simple_string_encoder("PONG".to_string())).expect(
+    for tup in vec_of_commands.iter() {
+        if tup.command == "PING" || tup.command == "ping" {
+            println!("{}", simple_string_encoder(&"PONG".to_string()));
+
+            write!(stream, "{}", simple_string_encoder(&"PONG".to_string())).expect(
                 "error writeing to stream"
             );
+
+        }
+        if tup.ty == Some("print".to_string()){
+        
+
+            write!(stream, "{}", simple_string_encoder(&tup.command)).expect("erooorrrr");
         }
     }
 }
-fn convert_to_vec_of_msg(s: String) -> Vec<(i32, String)> {
-    let mut vec_of_commands: Vec<(i32, String)> = Vec::new();
+fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)  {
+
     let mut count = 0;
     for i in s.lines() {
-        let t: (i32, String) = (0, "".to_string());
+        let t  :executor::Command  = executor::Command { ty: Some("".to_string()), command: ("".to_string()) };
 
         if i.contains("*") {
         } else if i.contains("$") {
-            vec_of_commands.push(t);
-
-            vec_of_commands[count].0 = i[1..].parse::<i32>().expect("error while parsing to i32");
+        
         } else {
-            vec_of_commands[count].1 = i.to_string();
+           vec_of_commands.push(t);
+
+            if vec_of_commands[count].ty == None{
+            if i.contains("PING")|| i.contains("ping"){
+                 
+            vec_of_commands[count].ty = Some("print".to_string());
+
+            vec_of_commands[count].command ="PING".to_string();
+
+            }
+            if i.contains("ECHO") || i.contains("echo"){
+
+
+            vec_of_commands[count].ty = Some("ECHO".to_string());
+            }
+            else if vec_of_commands[count].ty != Some("PING".to_string()) ||vec_of_commands[count].ty != Some("ping".to_string()) {
+                
+     vec_of_commands[count].command = i.to_string();
+
+            }
+            }
+
             count += 1;
         }
     }
-    vec_of_commands
+
 }
