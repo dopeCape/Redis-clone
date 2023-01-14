@@ -80,7 +80,7 @@ fn get_set_cahcer(method:String,commands:&Vec<Option<String>>)->String{
 
 
 let mut store:HashMap<String,String> = std::collections::HashMap::new();
-if method =="SET"    {
+if method =="set"    {
     let key  = &commands[0].to_owned().unwrap();
     let value = &commands[1].to_owned().unwrap();
 
@@ -133,7 +133,7 @@ fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>
         } else {
             if vec_of_commands[count].ty != None && vec_of_commands[count].command[0]!= None {
                 vec_of_commands.push(t);
-                count += 1;
+                
             }
 
             if vec_of_commands[count].ty == None {
