@@ -68,6 +68,9 @@ fn responder(stream: &mut TcpStream) {
 fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)  {
 
     let mut count = 0;
+
+        let t  :executor::Command  = executor::Command { ty: None, command: Some("".to_string()) };
+           vec_of_commands.push(t);
     for i in s.lines() {
         let t  :executor::Command  = executor::Command { ty: None, command: Some("".to_string()) };
 
