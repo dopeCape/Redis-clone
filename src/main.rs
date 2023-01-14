@@ -33,6 +33,7 @@ fn simple_string_encoder(data: &String) -> String {
 
 fn responder(stream: &mut TcpStream) {
     let mut buf = [0; 128];
+    let mut store: HashMap<String, String> = std::collections::HashMap::new();
     let mut vec_of_commands: Vec<executor::Command> = Vec::new();
     let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
@@ -61,19 +62,19 @@ fn responder(stream: &mut TcpStream) {
                 }
             }
         } else if tup.ty == Some("set".to_string()) {
-            write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command)).expect(
+            write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command,&mut store)).expect(
                 "erooorrrr"
             );
         } else if tup.ty == Some("get".to_string()) {
-            write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command)).expect(
+            write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command,&mut store)).expect(
                 "erooorrrr"
             );
         }
     }
 }
 
-fn get_set_cahcer(method: String, commands: &Vec<Option<String>>) -> String {
-    let mut store: HashMap<String, String> = std::collections::HashMap::new();
+fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut HashMap<String,String>) -> String {
+
     if method == "set" {
         let key = &commands[0].to_owned().unwrap();
         let value = &commands[1].to_owned().unwrap();
