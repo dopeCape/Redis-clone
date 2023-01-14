@@ -151,6 +151,11 @@ fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>
                     vec_of_commands[count].ty = Some("GET".to_string());
 
 
+                }if i.contains("SET") || i.contains("SET"){
+
+                    vec_of_commands[count].ty = Some("SET".to_string());
+
+                    
                 }}if vec_of_commands[count].ty != None {
 
                     
