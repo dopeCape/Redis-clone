@@ -122,7 +122,8 @@ fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>
     let mut t: executor::Command = executor::Command { ty: None, command: Vec::new() };
     t.command.push(None);
     vec_of_commands.push(t);
-    {}
+
+    println!("{}",s);
     for i in s.lines() {
         let mut t: executor::Command = executor::Command { ty: None, command: Vec::new() };
 
