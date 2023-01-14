@@ -80,7 +80,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>) -> String {
 
         let res = store.insert(key.to_string(), value.to_string());
 
-        println!("{:?}",res);
+        println!("{:?}",store);
         if res == None {
             return simple_string_encoder(&"OK".to_string());
         } else {
