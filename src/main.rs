@@ -104,9 +104,11 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
             if vec_of_commands[count].ty!=None && vec_of_commands[count].command != Some("PING".to_string()){
                 
      vec_of_commands[count].command = Some(i.to_string());
-    println!("{:?}",vec_of_commands[count].command ); 
+    // println!("{:?}",vec_of_commands[count].command ); 
             count += 1;
-            }
+        let t  :executor::Command  = executor::Command { ty: None, command:  None};
+           vec_of_commands.push(t);
+             }
             }
 
 
