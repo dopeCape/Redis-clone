@@ -60,7 +60,7 @@ fn responder(stream: &mut TcpStream) {
             write!(stream, "{}", simple_string_encoder(&x)).expect("erooorrrr");
 
                 },
-                _=>{}
+                None=>{println!("some thing weird")}
             }
         }
     }
@@ -102,7 +102,6 @@ println!("{}",count);
             }
             else if vec_of_commands[count].ty!=None{
                 
-                println!("{}",i.to_string());
      vec_of_commands[count].command = Some(i.to_string());
 
             count += 1;
