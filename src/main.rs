@@ -51,7 +51,7 @@ fn responder(stream: &mut TcpStream) {
             );
 
         }
-        if tup.ty == Some("print".to_string()){
+        else if tup.ty == Some("print".to_string()){
         
 
             write!(stream, "{}", simple_string_encoder(&tup.command)).expect("erooorrrr");
