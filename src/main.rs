@@ -62,7 +62,7 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
 
     let mut count = 0;
     for i in s.lines() {
-        let t  :executor::Command  = executor::Command { ty: Some("".to_string()), command: ("".to_string()) };
+        let t  :executor::Command  = executor::Command { ty: None, command: ("".to_string()) };
 
         if i.contains("*") {
         } else if i.contains("$") {
