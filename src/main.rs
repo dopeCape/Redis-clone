@@ -39,9 +39,9 @@ fn responder(stream: &mut TcpStream) {
     let mut vec_of_commands:Vec<executor::Command> = Vec::new();
     let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
-    println!("{:?}",vec_of_commands);
     convert_to_vec_of_msg(stream_string,&mut vec_of_commands);
 
+    println!("{:?}",vec_of_commands);
     for tup in vec_of_commands.iter() {
         if tup.command == "PING" || tup.command == "ping" {
             println!("{}", simple_string_encoder(&"PONG".to_string()));
