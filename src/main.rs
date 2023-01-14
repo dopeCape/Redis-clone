@@ -60,13 +60,13 @@ fn responder(stream: &mut TcpStream) {
                     }
                 }
             }
-        }    else if tup.ty == Some("SET".to_string()){
+        }    else if tup.ty == Some("set".to_string()){
                    
 
                         write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command) ).expect("erooorrrr");
 
             }
-        else if tup.ty == Some("GET".to_string()){
+        else if tup.ty == Some("get".to_string()){
                    
 
                         write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command) ).expect("erooorrrr");
@@ -149,22 +149,27 @@ fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>
                     vec_of_commands[count].ty = Some("print".to_string());
                     continue;
                 }if i.contains("GET") || i.contains("get"){
-                    vec_of_commands[count].ty = Some("GET".to_string());
+                    vec_of_commands[count].ty = Some("get".to_string());
 
 
                 }if i.contains("SET") || i.contains("set"){
 
-                    vec_of_commands[count].ty = Some("SET".to_string());
+                    vec_of_commands[count].ty = Some("set".to_string());
 
                     
                 }
 
             }if vec_of_commands[count].ty != None  && Some(i.to_string()) != vec_of_commands[count].ty{
 
-                      
-                    vec_of_commands[count].command.pop();
+                     vec_of_commands[count].command.pop();
                     vec_of_commands[count].command.push( Some(i.to_string())) ;
-                
+   if Some("print".to_string()) == vec_of_commands[count].ty{
+                        count+=1;
+                     }else if Some("get".to_string()) == vec_of_commands[count].ty ||Some("set".to_string()) == vec_of_commands[count].ty{}
+
+
+
+                                  
                     
                 
             }
