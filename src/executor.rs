@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Command{
 
     pub ty:Option<String>,
