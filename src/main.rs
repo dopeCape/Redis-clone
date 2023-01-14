@@ -91,6 +91,8 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
 
             vec_of_commands[count].command =Some("PING".to_string());
 
+        let t  :executor::Command  = executor::Command { ty: None, command: Some("".to_string()) };
+           vec_of_commands.push(t);
             count += 1;
             }
                     if i.contains("ECHO") || i.contains("echo"){
