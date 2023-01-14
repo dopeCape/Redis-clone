@@ -80,7 +80,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>) -> String {
 
         let res = store.insert(key.to_string(), value.to_string());
 
-        println!("{:?}",store);
+        // println!("{:?}",store);
         if res == None {
             return simple_string_encoder(&"OK".to_string());
         } else {
@@ -89,7 +89,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>) -> String {
     } else {
         let key = &commands[0].to_owned().unwrap();
         let res = store.get(key);
-        println!("{:?}",key);
+        println!("{:?}",store);
         if res == None {
             return simple_string_encoder(&"nil".to_string());
         } else {
