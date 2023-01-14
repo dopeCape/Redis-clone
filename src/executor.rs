@@ -2,13 +2,13 @@
 pub struct Command{
 
     pub ty:Option<String>,
-    pub command:String,
+    pub command:Option<String>,
 
 }
 
 
 impl Command{
-       pub fn new(ty:Option<String>,command:String)->Command{
+       pub fn new(ty:Option<String>,command:Option<String>)->Command{
            Command {  ty,command }
         
 

@@ -43,7 +43,7 @@ fn responder(stream: &mut TcpStream) {
 
     println!("{:?}",vec_of_commands);
     for tup in vec_of_commands.iter() {
-        if tup.command == "PING" || tup.command == "ping" {
+        if tup.command == Some("PING".to_string()) || tup.command == Some("ping".to_string()) {
             println!("{}", simple_string_encoder(&"PONG".to_string()));
 
             write!(stream, "{}", simple_string_encoder(&"PONG".to_string())).expect(
@@ -54,24 +54,28 @@ fn responder(stream: &mut TcpStream) {
         else if tup.ty == Some("print".to_string()){
         
 
-            write!(stream, "{}", simple_string_encoder(&tup.command)).expect("erooorrrr");
+            match &tup.command {
+                Some(x)=>{
+
+            write!(stream, "{}", simple_string_encoder(&x)).expect("erooorrrr");
+
+                },
+                _=>{}
+            }
         }
     }
 }
 fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)  {
 
     let mut count = 0;
-
-        let t  :executor::Command  = executor::Command { ty: None, command: ("".to_string()) };
-           vec_of_commands.push(t);
     for i in s.lines() {
-        let t  :executor::Command  = executor::Command { ty: None, command: ("".to_string()) };
+        let t  :executor::Command  = executor::Command { ty: None, command: Some("".to_string()) };
 
         if i.contains("*") {
         } else if i.contains("$") {
         
         } else {
-            if  vec_of_commands[count].ty != None{
+            if  vec_of_commands[count].ty != None && vec_of_commands[count].command ==None {
 
 
            vec_of_commands.push(t);
@@ -82,7 +86,7 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
                  
             vec_of_commands[count].ty = Some("print".to_string());
 
-            vec_of_commands[count].command ="PING".to_string();
+            vec_of_commands[count].command =Some("PING".to_string());
 
             }
                     if i.contains("ECHO") || i.contains("echo"){
@@ -92,7 +96,7 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
             }
             else if vec_of_commands[count].ty != Some("PING".to_string())  && vec_of_commands[count].ty == None ||vec_of_commands[count].ty != Some("ping".to_string())  && vec_of_commands[count].ty == None{
                 
-     vec_of_commands[count].command = i.to_string();
+     vec_of_commands[count].command = Some(i.to_string());
 
             }
             }
