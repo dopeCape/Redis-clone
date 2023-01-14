@@ -82,9 +82,10 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
 
 
            vec_of_commands.push(t);
+           count+=1;
             }
 
-            if vec_of_commands[count].ty == None{
+             if vec_of_commands[count].ty == None{
                     if i.contains("PING")|| i.contains("ping"){
                  
             vec_of_commands[count].ty = Some("print".to_string());
@@ -96,19 +97,17 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
            vec_of_commands.push(t);
             count += 1;
             }
-                    else if i.contains("ECHO") || i.contains("echo"){
+                     if i.contains("ECHO") || i.contains("echo"){
 
 
             vec_of_commands[count].ty = Some("ECHO".to_string());
             }
-            else if vec_of_commands[count].ty!=None && vec_of_commands[count].command != Some("PING".to_string()){
+              if vec_of_commands[count].ty!=None && vec_of_commands[count].command != Some("ping".to_string()){
                 
      vec_of_commands[count].command = Some(i.to_string());
     // println!("{:?}",vec_of_commands[count].command ); 
-            count += 1;
-        let t  :executor::Command  = executor::Command { ty: None, command:  None};
-           vec_of_commands.push(t);
-             }
+
+                  }
             }
 
 
