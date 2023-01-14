@@ -100,7 +100,7 @@ fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)
 println!("{}",count);
             vec_of_commands[count].ty = Some("ECHO".to_string());
             }
-            else if vec_of_commands[count].command!=None{
+            else if vec_of_commands[count].ty!=None{
                 
      vec_of_commands[count].command = Some(i.to_string());
 
