@@ -13,13 +13,10 @@ fn main() {
     for stream in listener.incoming() {
         match stream {
             Ok(mut stream) => {
-
-                th.execute(move||{
-
+                th.execute(move || {
                     loop {
                         responder(&mut stream);
                     }
-
                 });
             }
 
@@ -36,12 +33,12 @@ fn simple_string_encoder(data: &String) -> String {
 
 fn responder(stream: &mut TcpStream) {
     let mut buf = [0; 128];
-    let mut vec_of_commands:Vec<executor::Command> = Vec::new();
+    let mut vec_of_commands: Vec<executor::Command> = Vec::new();
     let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
-    convert_to_vec_of_msg(stream_string,&mut vec_of_commands);
+    convert_to_vec_of_msg(stream_string, &mut vec_of_commands);
 
-    println!("{:?}",vec_of_commands);
+    println!("{:?}", vec_of_commands);
     for tup in vec_of_commands.iter() {
         if tup.command == Some("PING".to_string()) || tup.command == Some("ping".to_string()) {
             println!("{}", simple_string_encoder(&"PONG".to_string()));
@@ -49,72 +46,50 @@ fn responder(stream: &mut TcpStream) {
             write!(stream, "{}", simple_string_encoder(&"PONG".to_string())).expect(
                 "error writeing to stream"
             );
-
-        }
-        else if tup.ty == Some("print".to_string()){
-        
-
+        } else if tup.ty == Some("print".to_string()) {
             match &tup.command {
-                Some(x)=>{
-
-            write!(stream, "{}", simple_string_encoder(&x)).expect("erooorrrr");
-
-                },
-                None=>{println!("some thing weird")}
+                Some(x) => {
+                    write!(stream, "{}", simple_string_encoder(&x)).expect("erooorrrr");
+                }
+                None => {
+                    println!("some thing weird");
+                }
             }
         }
     }
 }
-fn convert_to_vec_of_msg(s: String,vec_of_commands: &mut Vec<executor::Command>)  {
-
+fn convert_to_vec_of_msg(s: String, vec_of_commands: &mut Vec<executor::Command>) {
     let mut count = 0;
 
-        let t  :executor::Command  = executor::Command { ty: None, command: None };
-           vec_of_commands.push(t);
+    let t: executor::Command = executor::Command { ty: None, command: None };
+    vec_of_commands.push(t);
     for i in s.lines() {
-        let t  :executor::Command  = executor::Command { ty: None, command:  None};
+        let t: executor::Command = executor::Command { ty: None, command: None };
 
         if i.contains("*") {
         } else if i.contains("$") {
-        
         } else {
-            if  vec_of_commands[count].ty != None && vec_of_commands[count].command !=None {
-
-
-           vec_of_commands.push(t);
-           count+=1;
+            if vec_of_commands[count].ty != None && vec_of_commands[count].command != None {
+                vec_of_commands.push(t);
+                count += 1;
             }
 
-             if vec_of_commands[count].ty == None{
-                    if i.contains("PING")|| i.contains("ping"){
-                 
-            vec_of_commands[count].ty = Some("print".to_string());
+            if vec_of_commands[count].ty == None {
+                if i.contains("PING") || i.contains("ping") {
+                    vec_of_commands[count].ty = Some("print".to_string());
 
-            vec_of_commands[count].command =Some("PING".to_string());
-
-            
-        let t  :executor::Command  = executor::Command { ty: None, command:  None};
-           vec_of_commands.push(t);
-            count += 1;
-            }
-                     if i.contains("ECHO") || i.contains("echo"){
-
-
-            vec_of_commands[count].ty = Some("ECHO".to_string());
-            }
-             else  {
-               if vec_of_commands[count].ty != Some(i.to_string()){
-
-vec_of_commands[count].command = Some(i.to_string());
+                    vec_of_commands[count].command = Some("PING".to_string());
 
                }
-    // println!("{:?}",vec_of_commands[count].command ); 
-
-                  }
+                if i.contains("ECHO") || i.contains("echo") {
+                    vec_of_commands[count].ty = Some("ECHO".to_string());
+                } else {
+                    if vec_of_commands[count].ty != Some(i.to_string()) {
+                        vec_of_commands[count].command = Some(i.to_string());
+                    }
+                    // println!("{:?}",vec_of_commands[count].command );
+                }
             }
-
-
         }
     }
-
 }
