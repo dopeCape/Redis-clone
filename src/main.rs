@@ -1,19 +1,25 @@
-// Uncomment this block to pass the first stage
+// Uncomment this block to pass the cstage
 use std::{ net::{ TcpListener, TcpStream }, io::Read, io::Write };
 
+use threds::ThreadPool;
+mod threds;
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
 
     // Uncomment this block to pass the first stage
     let listener = TcpListener::bind("127.0.0.1:6379").unwrap();
-
+    let th = ThreadPool::new(5);
     for stream in listener.incoming() {
         match stream {
             Ok(mut stream) => {
-                loop{
 
-                responder(&mut stream);
-                }
+                th.execute(move||{
+
+                    loop {
+                        responder(&mut stream);
+                    }
+
+                });
             }
 
             Err(e) => {
@@ -27,9 +33,9 @@ fn simple_string_encoder(data: String) -> String {
     format!("+{}\r\n", data)
 }
 
-fn responder( stream: &mut TcpStream) {
+fn responder(stream: &mut TcpStream) {
     let mut buf = [0; 128];
-     let i = stream.read(&mut buf).expect("error encodoing to string");
+    let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
     let vec_of_command = convert_to_vec_of_msg(stream_string);
     println!("{:?}", vec_of_command);
@@ -42,11 +48,7 @@ fn responder( stream: &mut TcpStream) {
             );
         }
     }
-    
-    
-    
-
-   }
+}
 fn convert_to_vec_of_msg(s: String) -> Vec<(i32, String)> {
     let mut vec_of_commands: Vec<(i32, String)> = Vec::new();
     let mut count = 0;
