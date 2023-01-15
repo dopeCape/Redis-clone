@@ -22,7 +22,7 @@ fn main() {
             Ok(mut stream) => {
                 th.execute(move || {
                     loop {
-                        responder(&mut stream,   store.lock().unwrap().clone());
+                        responder(&mut stream,   store.clone());
                     }
                 });
             }
@@ -41,7 +41,7 @@ fn simple_string_encoder(data: &String) -> String {
    res
 }
 
-fn responder(stream: &mut TcpStream, mut  store: HashMap<String,String>) {
+fn responder(stream: &mut TcpStream, mut  store: Arc<Mutex<HashMap<String,String>>>) {
     let mut buf = [0; 128];
     let mut vec_of_commands: Vec<executor::Command> = Vec::new();
     let i = stream.read(&mut buf).expect("error encodoing to string");
@@ -82,13 +82,13 @@ fn responder(stream: &mut TcpStream, mut  store: HashMap<String,String>) {
     }
 }
 
-fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut HashMap<String,String>) -> String {
+fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<Mutex<HashMap<String,String>>>) -> String {
 
     if method == "set" {
         let key = &commands[0].to_owned().unwrap();
         let value = &commands[1].to_owned().unwrap();
 
-        let res = store.insert(key.to_string(), value.to_string());
+        let res = store.lock().unwrap().insert(key.to_string(), value.to_string());
 
         // println!("{:?}",store);
         if res == None {
@@ -98,7 +98,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Hash
         }
     } else {
         let key = &commands[0].to_owned().unwrap();
-        let res = store;
+        let res = store.lock().unwrap();
         let res = res.get(key);
 
         if res == None {
