@@ -1,3 +1,4 @@
+#[allow(unused_variables)]
 use std::thread;
 use std::sync::Arc;
 use std::sync::Mutex;

@@ -1,4 +1,5 @@
 // Uncomment this block to pass the cstage
+#![allow(dead_code)]
 
 use std::{ net::{ TcpListener, TcpStream }, io::Read, io::Write, collections::HashMap };
 
@@ -49,7 +50,7 @@ fn responder(stream: &mut TcpStream, mut  store: HashMap<String,String>) {
             tup.command[0] == Some("PING".to_string()) ||
             tup.command[0] == Some("ping".to_string())
         {
-            println!("{} i am breaking here", simple_string_encoder(&"PONG".to_string()));
+            println!("{}", simple_string_encoder(&"PONG".to_string()));
 
             write!(stream, "{}", simple_string_encoder(&"PONG".to_string())).expect(
                 "error writeing to stream"
