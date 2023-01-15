@@ -35,7 +35,10 @@ fn main() {
 }
 
 fn simple_string_encoder(data: &String) -> String {
-    format!("+{}\r\n", data)
+    
+   let res = format!("+{}\r\n", data);
+       println!("{}",res);
+   res
 }
 
 fn responder(stream: &mut TcpStream, mut  store: HashMap<String,String>) {
@@ -51,7 +54,7 @@ fn responder(stream: &mut TcpStream, mut  store: HashMap<String,String>) {
             tup.command[0] == Some("PING".to_string()) ||
             tup.command[0] == Some("ping".to_string())
         {
-            println!("{:?}", stream);
+            // println!("{:?}", stream);
 
             write!(stream, "{}", simple_string_encoder(&"PONG".to_string())).expect(
                 "error writeing to stream"
