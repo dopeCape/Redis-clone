@@ -1,21 +1,26 @@
 // Uncomment this block to pass the cstage
+
 use std::{ net::{ TcpListener, TcpStream }, io::Read, io::Write, collections::HashMap };
 
 use threds::ThreadPool;
 mod threds;
 mod executor;
+use std::sync::{Mutex,Arc};
+
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
 
     // Uncomment this block to pass the first stage
     let listener = TcpListener::bind("127.0.0.1:6379").unwrap();
+    let mut store: Arc<Mutex<HashMap<String, String>>> = Arc::new(Mutex::new(std::collections::HashMap::new()));
     let th = ThreadPool::new(5);
     for stream in listener.incoming() {
+        let store = Arc::clone(&store);
         match stream {
             Ok(mut stream) => {
                 th.execute(move || {
                     loop {
-                        responder(&mut stream);
+                        responder(&mut stream,   store.lock().unwrap().clone());
                     }
                 });
             }
@@ -31,9 +36,8 @@ fn simple_string_encoder(data: &String) -> String {
     format!("+{}\r\n", data)
 }
 
-fn responder(stream: &mut TcpStream) {
+fn responder(stream: &mut TcpStream, mut  store: HashMap<String,String>) {
     let mut buf = [0; 128];
-    let mut store: HashMap<String, String> = std::collections::HashMap::new();
     let mut vec_of_commands: Vec<executor::Command> = Vec::new();
     let i = stream.read(&mut buf).expect("error encodoing to string");
     let stream_string = String::from_utf8(buf[..i].to_vec()).expect("asas");
@@ -62,11 +66,11 @@ fn responder(stream: &mut TcpStream) {
                 }
             }
         } else if tup.ty == Some("set".to_string()) {
-            write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command,&mut store)).expect(
+            write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command, &mut store)).expect(
                 "erooorrrr"
             );
         } else if tup.ty == Some("get".to_string()) {
-            write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command,&mut store)).expect(
+           write!(stream, "{}", get_set_cahcer(tup.ty.to_owned().unwrap(), &tup.command, &mut store)).expect(
                 "erooorrrr"
             );
         }
@@ -89,8 +93,9 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Hash
         }
     } else {
         let key = &commands[0].to_owned().unwrap();
-        let res = store.get(key);
-        println!("{:?}",store);
+        let res = store;
+        let res = res.get(key);
+
         if res == None {
             return simple_string_encoder(&"nil".to_string());
         } else {
