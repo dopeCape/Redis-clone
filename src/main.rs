@@ -12,7 +12,7 @@ fn main() {
 
     // Uncomment this block to pass the first stage
     let listener = TcpListener::bind("127.0.0.1:6379").unwrap();
-    let mut store: Arc<Mutex<HashMap<String, String>>> = Arc::new(Mutex::new(std::collections::HashMap::new()));
+    let  store: Arc<Mutex<HashMap<String, String>>> = Arc::new(Mutex::new(std::collections::HashMap::new()));
     let th = ThreadPool::new(5);
     for stream in listener.incoming() {
         let store = Arc::clone(&store);
