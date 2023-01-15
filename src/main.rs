@@ -1,5 +1,6 @@
 // Uncomment this block to pass the cstage
 #![allow(dead_code)]
+#![allow(unused_variables)]
 
 use std::{ net::{ TcpListener, TcpStream }, io::Read, io::Write, collections::HashMap };
 
