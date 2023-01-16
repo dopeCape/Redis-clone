@@ -122,7 +122,10 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
         let key = &commands[0].to_owned().unwrap();
         let res = store.lock().unwrap();
         let res = res.get(key);
-        println!("{:?} && {:?}",res,&commands[1]);
+            let mut since_the_epoch = SystemTime::now().duration_since(UNIX_EPOCH).unwrap() ;
+            let x = since_the_epoch.as_secs() * 1000 +
+            since_the_epoch.subsec_nanos() as u64 / 1_000_000;
+        println!("{:?} && {:?}",res,x);
         if res == None {
             return simple_string_encoder(&"nil".to_string());
         } else {
@@ -132,9 +135,6 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
             return simple_string_encoder(&res.unwrap().0.to_string());
 
             }else{
-            let mut since_the_epoch = SystemTime::now().duration_since(UNIX_EPOCH).unwrap() ;
-            let x = since_the_epoch.as_secs() * 1000 +
-            since_the_epoch.subsec_nanos() as u64 / 1_000_000;
             if res.unwrap().1 > x{
                 
             return simple_string_encoder(&res.unwrap().0.to_string());
