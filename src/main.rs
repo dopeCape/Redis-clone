@@ -36,6 +36,10 @@ fn main() {
 
 fn simple_string_encoder(data: &String) -> String {
     
+    if data.contains("$"){
+        return data.to_string();
+
+    }
    let res = format!("+{}\r\n", data);
        println!("{}",res);
    res
@@ -125,7 +129,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
             let mut since_the_epoch = SystemTime::now().duration_since(UNIX_EPOCH).unwrap() ;
             let x = since_the_epoch.as_secs() * 1000 +
             since_the_epoch.subsec_nanos() as u64 / 1_000_000;
-        println!("{:?} && {:?}",res,x);
+        // println!("{:?} && {:?}",res,x);
         if res == None {
             return simple_string_encoder(&"nil".to_string());
         } else {
