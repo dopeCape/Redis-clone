@@ -122,7 +122,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
         let key = &commands[0].to_owned().unwrap();
         let res = store.lock().unwrap();
         let res = res.get(key);
-        println!("{:?}",res)       ;
+        println!("{:?} && {:?}",res,&commands[1]);
         if res == None {
             return simple_string_encoder(&"nil".to_string());
         } else {
@@ -143,6 +143,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
             }else{
             let y = store.lock().unwrap().remove(key);
             if y != None{
+
 
             return "$-1\r\n".to_string();
 
