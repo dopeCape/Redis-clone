@@ -140,7 +140,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
 
             }else{
             if res.unwrap().1 > x{
-                
+               println!("{}",res.unwrap().1 ) ;
             return simple_string_encoder(&res.unwrap().0.to_string());
 
 
