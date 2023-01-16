@@ -139,15 +139,16 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
             return simple_string_encoder(&res.unwrap().0.to_string());
 
             }else{
-               println!("{}",res.unwrap().1 ) ;
             if res.unwrap().1 > x{
             return simple_string_encoder(&res.unwrap().0.to_string());
 
 
             }else{
             let y = store.lock().unwrap().remove(key);
+               println!("{:?}",y) ;
             if y != None{
 
+               println!("{:?}",y) ;
 
             return "$-1\r\n".to_string();
 
