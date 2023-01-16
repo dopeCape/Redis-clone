@@ -135,6 +135,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
         } else {
             if res.unwrap().1 == 0{
 
+               println!("{:?}",res) ;
 
             return simple_string_encoder(&res.unwrap().0.to_string());
 
