@@ -131,6 +131,7 @@ fn get_set_cahcer(method: String, commands: &Vec<Option<String>>,store:&mut Arc<
             since_the_epoch.subsec_nanos() as u64 / 1_000_000;
         println!("{:?} && {:?}",res,x);
         if res == None {
+               println!("{:?}",res) ;
             return simple_string_encoder(&"nil".to_string());
         } else {
             if res.unwrap().1 == 0{
