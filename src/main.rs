@@ -1,13 +1,13 @@
-// Uncomment this block to pass the cstage
+
 #![allow(dead_code)]
 #![allow(unused_variables)]
+
 
 use std::{
     net::{ TcpListener, TcpStream },
     io::Read,
     io::Write,
     collections::HashMap,
-    fs::write,
     time::{ SystemTime, UNIX_EPOCH },
 };
 
@@ -51,7 +51,10 @@ fn simple_string_encoder(data: &String) -> String {
     println!("{}", res);
     res
 }
-
+fn the_fn_not_used() {
+    println!("tejas komawar ");
+    let var = "tejas";
+}
 fn responder(stream: &mut TcpStream, mut store: Arc<Mutex<HashMap<String, (String, u64)>>>) {
     let mut buf = [0; 128];
     let mut vec_of_commands: Vec<executor::Command> = Vec::new();
@@ -116,7 +119,7 @@ fn get_set_cahcer(
                 return simple_string_encoder(&res.unwrap().0.to_string());
             }
         } else {
-            let mut since_the_epoch = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
+            let since_the_epoch = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
             let x =
                 since_the_epoch.as_secs() * 1000 +
                 (since_the_epoch.subsec_nanos() as u64) / 1_000_000 +
@@ -129,9 +132,9 @@ fn get_set_cahcer(
         }
     } else {
         let key = &commands[0].to_owned().unwrap();
-        let  mut store_unlocked = store.lock().unwrap();
-        
-        let res =store_unlocked.get(key);
+        let mut store_unlocked = store.lock().unwrap();
+
+        let res = store_unlocked.get(key);
         let mut since_the_epoch = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
         let x =
             since_the_epoch.as_secs() * 1000 + (since_the_epoch.subsec_nanos() as u64) / 1_000_000;
