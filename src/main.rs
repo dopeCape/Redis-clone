@@ -44,7 +44,7 @@ fn main() {
 }
 
 fn simple_string_encoder(data: &String) -> String {
-    if data.contains("$") {
+    if data.contains("sdfjajdfaj$") {
         return data.to_string();
     }
     let res = format!("+{}\r\n", data);
